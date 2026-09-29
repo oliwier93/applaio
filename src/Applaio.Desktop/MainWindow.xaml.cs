@@ -141,20 +141,18 @@ public sealed partial class MainWindow : Window
             var importer = scope.ServiceProvider.GetRequiredService<RecruitmentImportService>();
             var result = await importer.ImportAsync(stream);
 
-            var errors = result.Problems.Count(problem => problem.Severity == ImportProblemSeverity.Error);
-
-            ImportResultBar.Severity = errors > 0
-                ? InfoBarSeverity.Error
+            ImportResultBar.Severity = result.Failed > 0
+                ? InfoBarSeverity.Warning
                 : InfoBarSeverity.Success;
-            ImportResultBar.Title = errors > 0 ? "Import zakończony z błędami" : "Import zakończony";
-            ImportResultBar.Message = errors > 0
-                ? $"Zaimportowano: {result.Imported}, pominięto: {result.Skipped}, błędy: {errors}."
+            ImportResultBar.Title = result.Failed > 0 ? "Import częściowo zakończony" : "Import zakończony";
+            ImportResultBar.Message = result.Failed > 0
+                ? $"Zaimportowano: {result.Imported}, pominięto: {result.Skipped}, błędy: {result.Failed}."
                 : $"Zaimportowano {result.Imported} procesów. Pominięto {result.Skipped} istniejących.";
             ImportResultBar.IsOpen = true;
 
             await LoadRecruitmentsAsync();
 
-            if (errors == 0)
+            if (result.Imported > 0 || result.Skipped > 0)
             {
                 SelectNavigationItem("recruitments");
                 ShowView("recruitments");

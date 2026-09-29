@@ -13,11 +13,6 @@ public sealed class RecruitmentImportService(
     {
         var batch = await importSource.ReadAsync(source, cancellationToken);
 
-        if (batch.Problems.Any(problem => problem.Severity == ImportProblemSeverity.Error))
-        {
-            return new RecruitmentImportResult(0, 0, batch.Problems);
-        }
-
         var imported = 0;
         var skipped = 0;
         var problems = batch.Problems.ToList();
@@ -56,7 +51,8 @@ public sealed class RecruitmentImportService(
             await repository.SaveChangesAsync(cancellationToken);
         }
 
-        return new RecruitmentImportResult(imported, skipped, problems);
+        var failed = problems.Count(problem => problem.Severity == ImportProblemSeverity.Error);
+        return new RecruitmentImportResult(imported, skipped, failed, problems);
     }
 
     private static bool TryMap(
@@ -196,4 +192,5 @@ public sealed class RecruitmentImportService(
 public sealed record RecruitmentImportResult(
     int Imported,
     int Skipped,
+    int Failed,
     IReadOnlyList<RecruitmentImportProblem> Problems);

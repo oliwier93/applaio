@@ -85,7 +85,9 @@ public sealed class RecruitmentImportService(
             return false;
         }
 
-        if (!Uri.TryCreate(item.OfferUrl, UriKind.Absolute, out var offerUrl))
+        Uri? offerUrl = null;
+        if (!string.IsNullOrWhiteSpace(item.OfferUrl)
+            && !Uri.TryCreate(item.OfferUrl, UriKind.Absolute, out offerUrl))
         {
             problem = new RecruitmentImportProblem(
                 item.SourceRow,

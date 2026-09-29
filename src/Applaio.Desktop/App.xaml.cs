@@ -29,6 +29,7 @@ public partial class App : Microsoft.UI.Xaml.Application
             options.UseSqlite($"Data Source={databasePath}"));
 
         services.AddScoped<IRecruitmentRepository, RecruitmentRepository>();
+        services.AddScoped<RecruitmentManagementService>();
         services.AddScoped<IRecruitmentImportSource, ExcelRecruitmentImportSource>();
         services.AddScoped<RecruitmentImportService>();
         services.AddTransient<MainWindow>();

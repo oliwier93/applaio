@@ -21,7 +21,7 @@ public partial class App : Microsoft.UI.Xaml.Application
         var databasePath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "Applaio",
-            "applaio.db");
+            "applaio-dev-v2.db");
 
         Directory.CreateDirectory(Path.GetDirectoryName(databasePath)!);
 

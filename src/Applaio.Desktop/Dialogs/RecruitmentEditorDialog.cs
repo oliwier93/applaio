@@ -234,9 +234,9 @@ public sealed class RecruitmentEditorDialog : ContentDialog
     {
         _company.Text = recruitment.Company;
         _position.Text = recruitment.Position;
-        Select(_status, recruitment.Status);
-        Select(_priority, recruitment.Priority);
-        Select(_fit, recruitment.Fit);
+        SelectStatus(recruitment.Status);
+        SelectPriority(recruitment.Priority);
+        SelectFit(recruitment.Fit);
         _source.Text = recruitment.Source ?? string.Empty;
         _recruiter.Text = recruitment.Recruiter ?? string.Empty;
         _offerUrl.Text = recruitment.OfferUrl?.ToString() ?? string.Empty;
@@ -353,18 +353,20 @@ public sealed class RecruitmentEditorDialog : ContentDialog
             ? null
             : new DateTimeOffset(value.Value.ToDateTime(TimeOnly.MinValue));
 
-    private static void Select<T>(ComboBox combo, T value) where T : struct, Enum
-    {
-        combo.SelectedItem = combo.ItemsSource
-            .Cast<object>()
-            .First(option => option switch
-            {
-                StatusOption status => EqualityComparer<T>.Default.Equals((T)(object)status.Value, value),
-                PriorityOption priority => EqualityComparer<T>.Default.Equals((T)(object)priority.Value, value),
-                FitOption fit => EqualityComparer<T>.Default.Equals((T)(object)fit.Value, value),
-                _ => false
-            });
-    }
+    private void SelectStatus(RecruitmentStatus value)
+        => _status.SelectedItem = _status.ItemsSource
+            .Cast<StatusOption>()
+            .First(option => option.Value == value);
+
+    private void SelectPriority(RecruitmentPriority value)
+        => _priority.SelectedItem = _priority.ItemsSource
+            .Cast<PriorityOption>()
+            .First(option => option.Value == value);
+
+    private void SelectFit(RecruitmentFit value)
+        => _fit.SelectedItem = _fit.ItemsSource
+            .Cast<FitOption>()
+            .First(option => option.Value == value);
 
     private sealed record StatusOption(RecruitmentStatus Value, string Label);
     private sealed record PriorityOption(RecruitmentPriority Value, string Label);

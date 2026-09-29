@@ -30,6 +30,9 @@ public sealed class RecruitmentRepository(ApplaioDbContext dbContext) : IRecruit
     public Task AddAsync(Recruitment recruitment, CancellationToken cancellationToken = default)
         => dbContext.Recruitments.AddAsync(recruitment, cancellationToken).AsTask();
 
+    public void Remove(Recruitment recruitment)
+        => dbContext.Recruitments.Remove(recruitment);
+
     public Task SaveChangesAsync(CancellationToken cancellationToken = default)
         => dbContext.SaveChangesAsync(cancellationToken);
 }

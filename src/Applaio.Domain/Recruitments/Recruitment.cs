@@ -64,6 +64,14 @@ public sealed class Recruitment
             ? null
             : Math.Max(0, today.DayNumber - LastContactOn.Value.DayNumber);
 
+    public void UpdateIdentity(string company, string position, DateOnly startedOn)
+    {
+        Company = Require(company, nameof(company));
+        Position = Require(position, nameof(position));
+        StartedOn = startedOn;
+        Touch();
+    }
+
     public void SetStatus(RecruitmentStatus status)
     {
         Status = status;

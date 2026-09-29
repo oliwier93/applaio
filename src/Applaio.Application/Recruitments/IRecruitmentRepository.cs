@@ -12,5 +12,6 @@ public interface IRecruitmentRepository
         DateOnly startedOn,
         CancellationToken cancellationToken = default);
     Task AddAsync(Recruitment recruitment, CancellationToken cancellationToken = default);
+    void Remove(Recruitment recruitment);
     Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }

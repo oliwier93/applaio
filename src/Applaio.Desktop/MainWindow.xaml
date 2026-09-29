@@ -4,9 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="Applaio">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Window.SystemBackdrop>
+        <DesktopAcrylicBackdrop />
+    </Window.SystemBackdrop>
+
+    <Grid Background="Transparent">
         <NavigationView
             x:Name="RootNavigation"
+            Background="Transparent"
             IsBackButtonVisible="Collapsed"
             IsSettingsVisible="True"
             PaneDisplayMode="LeftCompact"
@@ -69,7 +74,7 @@
                                 IsClosable="False"
                                 Severity="Informational"
                                 Title="Pierwsza migracja"
-                                Message="Importer jest wydzielony architektonicznie. Po dostarczeniu Excela odwzorujemy jego kolumny bez uzależniania domeny od formatu arkusza."/>
+                                Message="Importer jest gotowy do lokalnego odczytu arkusza REKRUTACJE i migracji danych do SQLite."/>
                         </StackPanel>
                     </Border>
                 </Grid>

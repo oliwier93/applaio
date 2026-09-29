@@ -1,5 +1,6 @@
 using Applaio.Application.Imports;
-using System.Globalization;\nusing ClosedXML.Excel;
+using System.Globalization;
+using ClosedXML.Excel;
 
 namespace Applaio.Infrastructure.Imports;
 
@@ -186,8 +187,16 @@ public sealed class ExcelRecruitmentImportSource : IRecruitmentImportSource
             return DateOnly.FromDateTime(DateTime.FromOADate(serial));
         }
 
-        if (DateOnly.TryParse(text, CultureInfo.GetCultureInfo("pl-PL"), DateTimeStyles.None, out var polishDate)
-            || DateOnly.TryParse(text, CultureInfo.InvariantCulture, DateTimeStyles.None, out polishDate))
+        if (DateOnly.TryParse(
+                text,
+                CultureInfo.GetCultureInfo("pl-PL"),
+                DateTimeStyles.None,
+                out var polishDate)
+            || DateOnly.TryParse(
+                text,
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out polishDate))
         {
             return polishDate;
         }
@@ -208,8 +217,16 @@ public sealed class ExcelRecruitmentImportSource : IRecruitmentImportSource
             return value;
         }
 
-        if (decimal.TryParse(text, NumberStyles.Number, CultureInfo.GetCultureInfo("pl-PL"), out value)
-            || decimal.TryParse(text, NumberStyles.Number, CultureInfo.InvariantCulture, out value))
+        if (decimal.TryParse(
+                text,
+                NumberStyles.Number,
+                CultureInfo.GetCultureInfo("pl-PL"),
+                out value)
+            || decimal.TryParse(
+                text,
+                NumberStyles.Number,
+                CultureInfo.InvariantCulture,
+                out value))
         {
             return value;
         }

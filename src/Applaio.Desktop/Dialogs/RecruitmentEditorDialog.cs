@@ -352,18 +352,15 @@ public sealed class RecruitmentEditorDialog : ContentDialog
             : new DateTimeOffset(value.Value.ToDateTime(TimeOnly.MinValue));
 
     private void SelectStatus(RecruitmentStatus value)
-        => _status.SelectedItem = _status.ItemsSource
-            .Cast<StatusOption>()
+        => _status.SelectedItem = ((IEnumerable<StatusOption>)_status.ItemsSource)
             .First(option => option.Value == value);
 
     private void SelectPriority(RecruitmentPriority value)
-        => _priority.SelectedItem = _priority.ItemsSource
-            .Cast<PriorityOption>()
+        => _priority.SelectedItem = ((IEnumerable<PriorityOption>)_priority.ItemsSource)
             .First(option => option.Value == value);
 
     private void SelectFit(RecruitmentFit value)
-        => _fit.SelectedItem = _fit.ItemsSource
-            .Cast<FitOption>()
+        => _fit.SelectedItem = ((IEnumerable<FitOption>)_fit.ItemsSource)
             .First(option => option.Value == value);
 
     private sealed record StatusOption(RecruitmentStatus Value, string Label);

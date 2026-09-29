@@ -44,7 +44,10 @@ public partial class App : Microsoft.UI.Xaml.Application
             await db.Database.EnsureCreatedAsync();
         }
 
-        _window = _services.GetRequiredService<MainWindow>();
+        _window = ActivatorUtilities.CreateInstance<MainWindow>(
+            _services,
+            _services.GetRequiredService<IServiceScopeFactory>());
+
         _window.Activate();
     }
 }

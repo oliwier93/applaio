@@ -1,4 +1,6 @@
+using Applaio.Application.Imports;
 using Applaio.Application.Recruitments;
+using Applaio.Infrastructure.Imports;
 using Applaio.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +27,10 @@ public partial class App : Application
 
         services.AddDbContext<ApplaioDbContext>(options =>
             options.UseSqlite($"Data Source={databasePath}"));
+
         services.AddScoped<IRecruitmentRepository, RecruitmentRepository>();
+        services.AddScoped<IRecruitmentImportSource, ExcelRecruitmentImportSource>();
+        services.AddScoped<RecruitmentImportService>();
         services.AddTransient<MainWindow>();
 
         _services = services.BuildServiceProvider();

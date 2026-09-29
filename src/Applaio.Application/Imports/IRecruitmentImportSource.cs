@@ -6,12 +6,33 @@ public interface IRecruitmentImportSource
 }
 
 public sealed record RecruitmentImportBatch(
-    IReadOnlyList<RecruitmentImportRow> Rows,
+    IReadOnlyList<RecruitmentImportItem> Items,
     IReadOnlyList<RecruitmentImportProblem> Problems);
 
-public sealed record RecruitmentImportRow(
+public sealed record RecruitmentImportItem(
     int SourceRow,
-    IReadOnlyDictionary<string, string?> Values);
+    string Company,
+    string Position,
+    string Status,
+    string Priority,
+    string Fit,
+    string Source,
+    string? Recruiter,
+    string OfferUrl,
+    DateOnly StartedOn,
+    DateOnly LastContactOn,
+    string? NextAction,
+    DateOnly? NextActionDueOn,
+    string WorkModel,
+    string Location,
+    string ContractType,
+    decimal? RateMin,
+    decimal? RateMax,
+    string? RateType,
+    string PrimaryStack,
+    string? KeyRequirements,
+    string? Risks,
+    string? Notes);
 
 public sealed record RecruitmentImportProblem(
     int? SourceRow,

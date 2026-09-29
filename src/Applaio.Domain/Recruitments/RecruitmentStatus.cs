@@ -2,15 +2,37 @@ namespace Applaio.Domain.Recruitments;
 
 public enum RecruitmentStatus
 {
-    Saved = 0,
-    Applied = 10,
-    RecruiterContact = 20,
-    Screening = 30,
-    TechnicalInterview = 40,
-    FinalInterview = 50,
-    Offer = 60,
-    Accepted = 70,
-    Rejected = 80,
-    Withdrawn = 90,
-    NoResponse = 100
+    ToReview = 0,
+    RecruiterContact = 10,
+    Replied = 20,
+    Applied = 30,
+    HrScreening = 40,
+    TechnicalInterview = 50,
+    RecruitmentTask = 60,
+    NextStage = 70,
+    FinalInterview = 80,
+    Offer = 90,
+    Paused = 100,
+    Ghosted = 110,
+    Rejected = 120,
+    Withdrawn = 130,
+    Accepted = 140
+}
+
+public static class RecruitmentStatusExtensions
+{
+    public static bool IsClosed(this RecruitmentStatus status)
+        => status is RecruitmentStatus.Rejected
+            or RecruitmentStatus.Withdrawn
+            or RecruitmentStatus.Accepted;
+
+    public static bool RequiresAttention(this RecruitmentStatus status)
+        => status is RecruitmentStatus.RecruiterContact
+            or RecruitmentStatus.Replied
+            or RecruitmentStatus.HrScreening
+            or RecruitmentStatus.TechnicalInterview
+            or RecruitmentStatus.RecruitmentTask
+            or RecruitmentStatus.NextStage
+            or RecruitmentStatus.FinalInterview
+            or RecruitmentStatus.Offer;
 }

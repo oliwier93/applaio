@@ -6,6 +6,12 @@ public interface IRecruitmentRepository
 {
     Task<IReadOnlyList<Recruitment>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<Recruitment?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<bool> ExistsAsync(
+        string company,
+        string position,
+        DateOnly startedOn,
+        CancellationToken cancellationToken = default);
     Task AddAsync(Recruitment recruitment, CancellationToken cancellationToken = default);
+    void Remove(Recruitment recruitment);
     Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }

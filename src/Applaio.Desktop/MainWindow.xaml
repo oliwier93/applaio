@@ -8,9 +8,30 @@
         <DesktopAcrylicBackdrop />
     </Window.SystemBackdrop>
 
-    <Grid Background="Transparent">
+    <Grid Background="Transparent" RowDefinitions="44,*">
+        <Grid
+            x:Name="AppTitleBar"
+            Grid.Row="0"
+            Background="Transparent"
+            Height="44"
+            ColumnDefinitions="Auto,*">
+            <StackPanel
+                Orientation="Horizontal"
+                VerticalAlignment="Center"
+                Margin="16,0,0,0"
+                Spacing="10">
+                <FontIcon Glyph="&#xE8A5;" FontSize="16"/>
+                <TextBlock
+                    Text="Applaio"
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    FontWeight="SemiBold"/>
+            </StackPanel>
+        </Grid>
+
         <NavigationView
             x:Name="RootNavigation"
+            Grid.Row="1"
             Background="Transparent"
             IsBackButtonVisible="Collapsed"
             IsSettingsVisible="True"
@@ -18,7 +39,7 @@
             SelectionChanged="RootNavigation_SelectionChanged">
 
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Dashboard" Tag="dashboard">
+                <NavigationViewItem Content="Dashboard" Tag="dashboard" IsSelected="True">
                     <NavigationViewItem.Icon>
                         <SymbolIcon Symbol="Home"/>
                     </NavigationViewItem.Icon>
@@ -40,8 +61,8 @@
                 </NavigationViewItem>
             </NavigationView.MenuItems>
 
-            <Grid Padding="32" RowDefinitions="Auto,*">
-                <StackPanel Spacing="6">
+            <Grid Padding="28" RowDefinitions="Auto,*">
+                <StackPanel Spacing="4">
                     <TextBlock
                         x:Name="PageTitle"
                         Text="Dashboard"
@@ -49,34 +70,152 @@
                     <TextBlock
                         x:Name="PageSubtitle"
                         Text="Śledź cały proces rekrutacji w jednym miejscu."
-                        Opacity="0.7"/>
+                        Opacity="0.68"/>
                 </StackPanel>
 
-                <Grid Grid.Row="1" Margin="0,28,0,0">
-                    <Border
-                        CornerRadius="18"
-                        Padding="24"
-                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                        BorderThickness="1">
-                        <StackPanel Spacing="18">
+                <Grid Grid.Row="1" Margin="0,22,0,0">
+                    <Grid x:Name="DashboardView">
+                        <Border
+                            CornerRadius="18"
+                            Padding="24"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1">
+                            <StackPanel Spacing="16">
+                                <TextBlock Text="Applaio" FontSize="30" FontWeight="SemiBold"/>
+                                <TextBlock
+                                    MaxWidth="700"
+                                    TextWrapping="Wrap"
+                                    FontSize="16"
+                                    Text="Desktopowy tracker rekrutacji. Zaimportuj swój arkusz w sekcji Import, a dane zostaną zapisane lokalnie i pojawią się w Rekrutacjach."/>
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <TextBlock Text="Liczba procesów:" Opacity="0.7"/>
+                                    <TextBlock x:Name="DashboardCountText" Text="0" FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <Grid x:Name="RecruitmentsView" Visibility="Collapsed" RowDefinitions="Auto,*">
+                        <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,14">
+                            <TextBox
+                                x:Name="RecruitmentSearchBox"
+                                PlaceholderText="Szukaj po firmie, stanowisku, statusie lub stacku..."
+                                TextChanged="RecruitmentSearchBox_TextChanged"
+                                MaxWidth="480"
+                                HorizontalAlignment="Stretch"/>
                             <TextBlock
-                                Text="Applaio"
-                                FontSize="32"
-                                FontWeight="SemiBold"/>
-                            <TextBlock
-                                MaxWidth="680"
-                                TextWrapping="Wrap"
-                                Text="Nowoczesny, lokalny tracker rekrutacji dla Windows 11. Kolejny krok: migracja Twoich rzeczywistych danych z Excela i zbudowanie widoku pipeline."
-                                FontSize="16"/>
-                            <InfoBar
-                                IsOpen="True"
-                                IsClosable="False"
-                                Severity="Informational"
-                                Title="Pierwsza migracja"
-                                Message="Importer jest gotowy do lokalnego odczytu arkusza REKRUTACJE i migracji danych do SQLite."/>
-                        </StackPanel>
-                    </Border>
+                                Grid.Column="1"
+                                x:Name="RecruitmentCountText"
+                                VerticalAlignment="Center"
+                                Margin="16,0,0,0"
+                                Opacity="0.7"/>
+                        </Grid>
+
+                        <ListView
+                            x:Name="RecruitmentsList"
+                            Grid.Row="1"
+                            SelectionMode="None"
+                            IsItemClickEnabled="False">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        Margin="0,0,0,10"
+                                        Padding="16"
+                                        CornerRadius="14"
+                                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1">
+                                        <Grid ColumnDefinitions="2.2*,1.2*,1.1*,1.2*,Auto" ColumnSpacing="18">
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Company}" FontSize="16" FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding Position}" Opacity="0.72" TextWrapping="Wrap"/>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock Text="Status" FontSize="11" Opacity="0.55"/>
+                                                <TextBlock Text="{Binding Status}" TextWrapping="Wrap"/>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="2">
+                                                <TextBlock Text="Źródło" FontSize="11" Opacity="0.55"/>
+                                                <TextBlock Text="{Binding Source}" TextWrapping="Wrap"/>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="3">
+                                                <TextBlock Text="Model / stawka" FontSize="11" Opacity="0.55"/>
+                                                <TextBlock Text="{Binding WorkAndRate}" TextWrapping="Wrap"/>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="4" HorizontalAlignment="Right">
+                                                <TextBlock Text="{Binding StartedOn}" FontSize="12" Opacity="0.65"/>
+                                                <TextBlock Text="{Binding Fit}" FontSize="12" HorizontalAlignment="Right"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+
+                    <Grid x:Name="CompaniesView" Visibility="Collapsed">
+                        <Border
+                            CornerRadius="18"
+                            Padding="24"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1">
+                            <TextBlock Text="Widok firm do zbudowania w kolejnym kroku."/>
+                        </Border>
+                    </Grid>
+
+                    <Grid x:Name="ImportView" Visibility="Collapsed">
+                        <Border
+                            CornerRadius="18"
+                            Padding="26"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1">
+                            <StackPanel Spacing="16" MaxWidth="760" HorizontalAlignment="Left">
+                                <TextBlock Text="Import danych" FontSize="24" FontWeight="SemiBold"/>
+                                <TextBlock
+                                    TextWrapping="Wrap"
+                                    Opacity="0.75"
+                                    Text="Wybierz plik XLSX z arkuszem REKRUTACJE. Import zapisze dane wyłącznie lokalnie w SQLite. Ponowne wskazanie tego samego pliku nie powinno dublować istniejących procesów."/>
+                                <Button
+                                    x:Name="ImportWorkbookButton"
+                                    Click="ImportWorkbookButton_Click"
+                                    HorizontalAlignment="Left">
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <SymbolIcon Symbol="Upload"/>
+                                        <TextBlock Text="Wybierz Excel i zaimportuj"/>
+                                    </StackPanel>
+                                </Button>
+                                <ProgressRing
+                                    x:Name="ImportProgressRing"
+                                    IsActive="False"
+                                    Visibility="Collapsed"
+                                    Width="24"
+                                    Height="24"
+                                    HorizontalAlignment="Left"/>
+                                <InfoBar
+                                    x:Name="ImportResultBar"
+                                    IsOpen="False"
+                                    IsClosable="True"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <Grid x:Name="SettingsView" Visibility="Collapsed">
+                        <Border
+                            CornerRadius="18"
+                            Padding="24"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1">
+                            <TextBlock Text="Ustawienia Applaio pojawią się tutaj."/>
+                        </Border>
+                    </Grid>
                 </Grid>
             </Grid>
         </NavigationView>

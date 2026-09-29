@@ -130,8 +130,7 @@ public sealed class RecruitmentEditorDialog : ContentDialog
         return new ScrollViewer
         {
             Content = root,
-            MaxHeight = 650,
-            VerticalScrollBarVisibility = ScrollBarVisibility.Auto
+            MaxHeight = 650
         };
     }
 
@@ -141,7 +140,6 @@ public sealed class RecruitmentEditorDialog : ContentDialog
         {
             Text = title,
             FontSize = 18,
-            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
             Margin = new Thickness(0, 8, 0, 0)
         });
 
